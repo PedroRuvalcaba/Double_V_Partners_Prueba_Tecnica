@@ -1,0 +1,191 @@
+{
+	"info": {
+		"_postman_id": "ace65e97-d33e-4e15-963c-b7e7a71bae80",
+		"name": "Fake_Store_API_Functional",
+		"description": "# About this collection\n\nThis collection is designed to help you test the performance of your API endpoints with varying sizes of query parameters. The collection contains pre-built requests that simulate large and small query parameters to assess how well your API handles different loads.\n\nUsing this collection, you can identify potential bottlenecks or performance issues in your API, enabling you to optimize and enhance the overall performance.\n\n## **Using the collection**\n\n**Step 1:** Replace the placeholders in the URLs and parameters with your own API base URLs and relevant query parameters.\n\n**Step 2 (optional):** Modify the sizes of the query parameters to reflect your specific use case better. You can create multiple requests with varying parameter sizes to test your API's performance thoroughly.\n\n**Step 3:** Run the collection using Postman's Collection Runner or Postman's Newman CLI tool.\n\n**Step 4:** Analyze the results to identify performance bottlenecks, slow response times, or potential issues with handling large or small query parameters.\n\n## Resources\n\n[Performance Testing](https://learning.postman.com/docs/designing-and-developing-your-api/testing-your-api/introduction-to-performance-testing/)  \n[Postman Collection Runner](https://learning.postman.com/docs/running-collections/intro-to-collection-runs/)  \n[Postman Newman CLI](https://learning.postman.com/docs/running-collections/using-newman-cli/command-line-integration-with-newman/)\n\n[  \n](https://postman.postman.co/documentation/22517504-3302192d-87dd-4612-b381-61894de21203?entity=&branch=&version=)",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "19352857"
+	},
+	"item": [
+		{
+			"name": "Categoría \"Electronics\"",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Código de estado 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Todos los productos son categoría 'electronics'\", function () {\r",
+							"    const data = pm.response.json();\r",
+							"    pm.expect(data.length).to.be.above(0);\r",
+							"\r",
+							"    data.forEach(item => {\r",
+							"        const category = (item.category || \"\").toLowerCase();\r",
+							"        pm.expect(category).to.eql(\"electronics\");\r",
+							"    });\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://fakestoreapi.com/products/category/electronics",
+					"protocol": "https",
+					"host": [
+						"fakestoreapi",
+						"com"
+					],
+					"path": [
+						"products",
+						"category",
+						"electronics"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Consulta datos producto",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Código de estado 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"El producto tiene un ID y nombre\", function () {\r",
+							"    const item = pm.response.json();\r",
+							"    pm.expect(item).to.have.property(\"id\");\r",
+							"    pm.expect(item).to.have.property(\"title\");\r",
+							"    pm.expect(item.title).to.not.be.empty;\r",
+							"    pm.expect(item.title).to.eql(\"Silicon Power 256GB SSD 3D NAND A55 SLC Cache Performance Boost SATA III 2.5\")\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://fakestoreapi.com/products/11",
+					"protocol": "https",
+					"host": [
+						"fakestoreapi",
+						"com"
+					],
+					"path": [
+						"products",
+						"11"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Crear producto",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Producto creado con éxito (201 o 200)\", function () {\r",
+							"    pm.expect(pm.response.code).to.be.oneOf([200, 201]);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"La respuesta contiene el ID del nuevo producto\", function () {\r",
+							"    const item = pm.response.json();\r",
+							"    pm.expect(item).to.have.property(\"id\");\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"id\": 22,\r\n  \"title\": \"Producto nuevo agregado\",\r\n  \"price\": 1000,\r\n  \"description\": \"Un producto recién agregado al listado\",\r\n  \"category\": \"electronics\",\r\n  \"image\": \"http://example.com\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://fakestoreapi.com/products",
+					"protocol": "https",
+					"host": [
+						"fakestoreapi",
+						"com"
+					],
+					"path": [
+						"products"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Actualizar imagen producto",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Imagen actualizada correctamente\", function () {\r",
+							"    pm.expect(pm.response.code).to.be.oneOf([200, 204]);\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"id\": 22,\r\n  \"title\": \"Producto nuevo agregado\",\r\n  \"price\": 1000,\r\n  \"description\": \"Un producto recién agregado al listado\",\r\n  \"category\": \"electronics\",\r\n  \"image\": \"https://www.google.com/imgres?q=laptop&imgurl=https%3A%2F%2Fwww.officedepot.com.mx%2Fmedias%2F1200ftw-100214057-2.jpg%3Fcontext%3DbWFzdGVyfHJvb3R8MjE4MzgxfGltYWdlL2pwZWd8YURnekwyaGxNaTh4TWpRM05UQTNNVFl5TnpJNU5DOHhNakF3Wm5SM1h6RXdNREl4TkRBMU55MHlMbXB3Wnd8ZTEwMWY1NTZjYjhlZTY5ZjRhYTVjOTZiYjMzYjFmZTUxZDNiMDU1N2EzNTYzMmE0YjFlMmVlODI4NWM2NTRjNw&imgrefurl=https%3A%2F%2Fwww.officedepot.com.mx%2Fofficedepot%2Fen%2FCategor%25C3%25ADa%2FTodas%2Fcomputo%2Flaptops-y-macbook%2Flaptops%2FLaptop-Lenovo-IdeaPad-Slim-3-15IRH8-Intel-Core-i7-FHD-15-6-pulg-512gb-SSD-16gb-RAM-Gris-%2Fp%2F100214057%3Fsrsltid%3DAfmBOoqva9gbPPJogiHDlwoQxJ3qcJG9qMBK5s-wl5IOZASL1UxpISzb&docid=EGXavdvWmTyJMM&tbnid=kW8DJCG4jSs_2M&vet=12ahUKEwjHvPCNlIuPAxV2JEQIHdMBNm0QM3oECCkQAA..i&w=1200&h=1200&hcb=2&ved=2ahUKEwjHvPCNlIuPAxV2JEQIHdMBNm0QM3oECCkQAA\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://fakestoreapi.com/products/21",
+					"protocol": "https",
+					"host": [
+						"fakestoreapi",
+						"com"
+					],
+					"path": [
+						"products",
+						"21"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

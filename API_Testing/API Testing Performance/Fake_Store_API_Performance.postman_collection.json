@@ -1,0 +1,98 @@
+{
+	"info": {
+		"_postman_id": "505286fd-1e76-48ad-8e14-89b0b52e3eff",
+		"name": "Fake_Store_API_Performance",
+		"description": "# About this collection\n\nThis collection is designed to help you test the performance of your API endpoints with varying sizes of query parameters. The collection contains pre-built requests that simulate large and small query parameters to assess how well your API handles different loads.\n\nUsing this collection, you can identify potential bottlenecks or performance issues in your API, enabling you to optimize and enhance the overall performance.\n\n## **Using the collection**\n\n**Step 1:** Replace the placeholders in the URLs and parameters with your own API base URLs and relevant query parameters.\n\n**Step 2 (optional):** Modify the sizes of the query parameters to reflect your specific use case better. You can create multiple requests with varying parameter sizes to test your API's performance thoroughly.\n\n**Step 3:** Run the collection using Postman's Collection Runner or Postman's Newman CLI tool.\n\n**Step 4:** Analyze the results to identify performance bottlenecks, slow response times, or potential issues with handling large or small query parameters.\n\n## Resources\n\n[Performance Testing](https://learning.postman.com/docs/designing-and-developing-your-api/testing-your-api/introduction-to-performance-testing/)  \n[Postman Collection Runner](https://learning.postman.com/docs/running-collections/intro-to-collection-runs/)  \n[Postman Newman CLI](https://learning.postman.com/docs/running-collections/using-newman-cli/command-line-integration-with-newman/)\n\n[  \n](https://postman.postman.co/documentation/22517504-3302192d-87dd-4612-b381-61894de21203?entity=&branch=&version=)",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "19352857"
+	},
+	"item": [
+		{
+			"name": "Traer todos los productos",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Código de estado 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Todos los productos son categoría 'electronics'\", function () {\r",
+							"    const data = pm.response.json();\r",
+							"    pm.expect(data.length).to.be.above(0);\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://fakestoreapi.com/products",
+					"protocol": "https",
+					"host": [
+						"fakestoreapi",
+						"com"
+					],
+					"path": [
+						"products"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Crear producto",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Producto creado con éxito (201 o 200)\", function () {\r",
+							"    pm.expect(pm.response.code).to.be.oneOf([200, 201]);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"La respuesta contiene el ID del nuevo producto\", function () {\r",
+							"    const item = pm.response.json();\r",
+							"    pm.expect(item).to.have.property(\"id\");\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"id\": 22,\r\n  \"title\": \"Producto nuevo agregado\",\r\n  \"price\": 1000,\r\n  \"description\": \"Un producto recién agregado al listado\",\r\n  \"category\": \"electronics\",\r\n  \"image\": \"http://example.com\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://fakestoreapi.com/products",
+					"protocol": "https",
+					"host": [
+						"fakestoreapi",
+						"com"
+					],
+					"path": [
+						"products"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
